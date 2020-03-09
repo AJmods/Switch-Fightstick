@@ -29,8 +29,41 @@ these buttons for our use.
 
 #define CPU_PRESCALE(n) (CLKPR = 0x80, CLKPR = (n))
 #define BAUD_RATE 38400
+#define true 1
+#define false 0
 
 extern const uint8_t image_data[0x12c1] PROGMEM;
+
+//button states
+//left stick
+extern int l_moveLeft = false;
+extern int l_moveRight = false;
+extern int l_moveUp = false;
+extern int l_moveDown = false;
+
+//right stick
+extern int r_moveLeft = false;
+extern int r_moveRight = false;
+extern int r_moveUp = false;
+extern int r_moveDown = false;
+
+//buttons
+extern int aPressed = false;
+extern int bPressed = false;
+extern int yPressed = false;
+extern int xPressed = false;
+extern int lPressed = false;
+extern int rPressed = false;
+extern int zlPressed = false;
+extern int zrPressed = false;
+
+//dpad
+extern int dpadLeftPressed = false;
+extern int dpadRightPressed = false;
+extern int dpadUpPressed = false;
+extern int dpadDownPressed = false;
+
+
 
 // Main entry point.
 int main(void) {
@@ -146,21 +179,11 @@ void HID_Task(void) {
 typedef enum {
 	SYNC_CONTROLLER,
 	SYNC_POSITION,
-	STOP_X,
-	STOP_Y,
-	MOVE_X,
-	MOVE_Y,
 	DONE,
-	PRESS_A,
-	UNPRESS_A,
-	PRESS_B,
-	PRESS_Y,
-	PRESS_X,
 	WAITING,
 	HODL,
-	WAITUART,
-	CONNECT,
-	PRESSY
+	UPDATE,
+	CONNECT
 } State_t;
 State_t state = SYNC_CONTROLLER;
 
@@ -195,11 +218,13 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 	// States and moves management
 	switch (state)
 	{
+
+	    //SYNC_CONTROLLER is only called when Arduino is plugged in
 		case SYNC_CONTROLLER:
 			if (report_count > 100)
 			{
 				report_count = 0;
-				state = WAITUART;
+				state = UPDATE;
 			}
 			else if (report_count == 25 || report_count == 50)
 			{
@@ -212,84 +237,109 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 			report_count++;
 			break;
 
-		case PRESSY:
-			ReportData->Button |= SWITCH_Y;
-			state = UNPRESS_A;
-			break;
-		case PRESS_B:
-			ReportData->Button |= SWITCH_B;
-			state = UNPRESS_A;
-			break;
-		case PRESS_A:
-			ReportData->Button |= SWITCH_A;
-			state = HODL;
-			break;
 		case CONNECT:
 			ReportData->Button |= SWITCH_L;
 			ReportData->Button |= SWITCH_R;
 			_delay_ms(500);
-			state = WAITUART;
-			break;
-		case UNPRESS_A:
-			state = WAITING;
+			state = UPDATE;
 			break;
 		case WAITING:
-			state = WAITUART;
+			state = UPDATE;
 			break;
 		case HODL:
 			_delay_ms(5);
-			state=WAITUART;
+			state=UPDATE;
 			break;
-		case WAITUART:
-			c = uart_getchar();
-			if (c == 'u'){
-				ReportData->LY = STICK_MIN;
+		case UPDATE:
+
+		    //---------------------------------------------------------------------------------------------------------------------------
+            //Read UART char
+            //---------------------------------------------------------------------------------------------------------------------------
+
+            //Upper case is pressed, lowercase is released.
+            c = uart_getchar();
+			if (c == 'U'){
+			    l_moveUp = true;
+			    l_moveDown = false;
+				//ReportData->LY = STICK_MIN;
+			} else if (c == 'u') {
+			    l_moveUp = false;
+			}else if (c == 'D') {
+			    l_moveDown = true;
+			    l_moveUp = false;
+				//ReportData->LY = STICK_MAX;
 			} else if (c == 'd') {
-				ReportData->LY = STICK_MAX;
-			} else if (c == 'l'){
-				ReportData->LX = STICK_MIN;
+			    l_moveDown = false;
+			} else if (c == 'L'){
+			    l_moveLeft = true;
+			    l_moveRight = false;
+				//ReportData->LX = STICK_MIN;
+			} else if (c == 'l') {
+			    l_moveLeft = false;
+			} else if (c == 'R') {
+			    l_moveRight = true;
+			    l_moveLeft = false;
+				//ReportData->LX = STICK_MAX;
 			} else if (c == 'r') {
-				ReportData->LX = STICK_MAX;
+			    l_moveRight = false;
+			} else if (c == 'A') {
+			    aPressed = true;
+				//state = PRESS_A;
 			} else if (c == 'a') {
-				state = PRESS_A;
-			} else if (c == 'b'){
-				state = PRESS_B;
-			}else if (c == 'y') {
-				state = PRESSY;
-			} else if (c == 'c'){
+			    aPressed = false;
+			} else if (c == 'B'){
+			    bPressed = true;
+				//state = PRESS_B;
+			} else if (c == 'b') {
+                bPressed = false;
+			}else if (c == 'Y') {
+			    yPressed = true;
+				//state = PRESSY;
+			} else if (c == 'y') {
+			    yPressed = false;
+			} else if (c == 'X') {
+			    xPressed = true;
+			} else if (c == 'x') {
+                xPressed = false;
+            } else if (c == 'C' || c == 'c'){
 				state = CONNECT;
 			}
 
-			break;
-		case STOP_X:
-			state = MOVE_X;
-			break;
-		case STOP_Y:
-			if (ypos < 120 - 1)
-				state = MOVE_Y;
-			else
-				state = DONE;
-			break;
-		case MOVE_X:
-			if (ypos % 2)
-			{
-				ReportData->HAT = HAT_LEFT;
-				xpos--;
+			//---------------------------------------------------------------------------------------------------------------------------
+			//Button Actions
+			//---------------------------------------------------------------------------------------------------------------------------
+
+			//move left, right, or no direction among X axis
+			if (l_moveRight) {
+                ReportData->LX = STICK_MAX;
+			} else if (l_moveLeft) {
+			    ReportData->LX = STICK_MIN;
+			} else { //This statement is probably not needed
+                ReportData->LX = STICK_CENTER;
 			}
-			else
-			{
-				ReportData->HAT = HAT_RIGHT;
-				xpos++;
-			}
-			if (xpos > 0 && xpos < 320 - 1)
-				state = STOP_X;
-			else
-				state = STOP_Y;
-			break;
-		case MOVE_Y:
-			ReportData->HAT = HAT_BOTTOM;
-			ypos++;
-			state = STOP_X;
+
+            //move up, down, or no direction among Y axis
+            if (l_moveUp) {
+                ReportData->LY = STICK_MAX;
+            } else if (l_moveDown) {
+                ReportData->LY = STICK_MIN;
+            } else { //This statement is probably not needed
+                ReportData->LY = STICK_CENTER;
+            }
+
+            //check other buttons
+            if (aPressed) {
+                ReportData -> Button |= SWITCH_A;
+            }
+            if (bPressed) {
+                ReportData -> Button |= SWITCH_B;
+            }
+            if (yPressed) {
+                ReportData -> Button |= SWITCH_Y
+            }
+            if (xPressed) {
+                ReportData -> Button |= SWITCH_X
+            }
 			break;
 		case DONE:
 			#ifdef ALERT_WHEN_DONE
