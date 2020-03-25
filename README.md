@@ -9,13 +9,13 @@ On June 20, 2017, Nintendo released System Update v3.0.0 for the Nintendo Switch
 Unlike the Wii U, which handles these controllers on a 'per-game' basis, the Switch treats the Pokken controller as if it was a Switch Pro Controller. Along with having the icon for the Pro Controller, it functions just like it in terms of using it in other games, apart from the lack of physical controls such as analog sticks, the buttons for the stick clicks, or other system buttons such as Home or Capture.
 
 ### What does the project do currently?
-Currently, as a proof of concept, you can use a keyboard on the switch.  To do this, on a mircocontroller with this project complied on it, plug it into the switch.  Then on a computer, connect it to the microcontroller via USB to UART.  Then run the testInput.py script (using Python 2.7) under the Python folder.  To let the script know which microcontroller you are using, enter 0 and hope that works.  If not push 1, if not push 2, etc.  If nothing works, give up and cry.  This project is pre-alpha and needs a lot of work and documentation which I will update once I'm actually making good progress on the project.
+Currently, as a proof of concept, you can use a keyboard on the switch.  To do this, on a mircocontroller with this project complied on it, plug it into the switch.  Then on a computer, connect it to the microcontroller via USB to UART.  Then run the testInput.py script (using Python 2.7) under the Python folder.  To let the script know which microcontroller you are using, enter 0 and hope that works.  If not push 1, if not push 2, etc.  If nothing works, give up and cry cause there is a million things that could go wrong so good look troubleshooting.  This project is pre-alpha and needs a lot of work and documentation which I will update once I'm actually making good progress on the project.
 
 ### What are the controls?
-WSAD move the left stick
-SPACE is A
-left control is B
-ENTER is L and R (to connect the controller to the switch)
+WSAD move the left stick,
+SPACE is A,
+left control is B,
+and ENTER is L and R (to connect the controller to the switch).
 
 #### Compiling and Flashing onto the Teensy 2.0++
 Go to the Teensy website and download/install the [Teensy Loader application](https://www.pjrc.com/teensy/loader.html). For Linux, follow their instructions for installing the [GCC Compiler and Tools](https://www.pjrc.com/teensy/gcc.html). For Windows, you will need the [latest AVR toolchain](http://www.atmel.com/tools/atmelavrtoolchainforwindows.aspx) from the Atmel site. See [this issue](https://github.com/LightningStalker/Splatmeme-Printer/issues/10) and [this thread](http://gbatemp.net/threads/how-to-use-shinyquagsires-splatoon-2-post-printer.479497/) on GBAtemp for more information. (Note for Mac users - the AVR MacPack is now called AVR CrossPack. If that does not work, you can try installing `avr-gcc` with `brew`.)
