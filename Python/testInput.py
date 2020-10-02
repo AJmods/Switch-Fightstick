@@ -99,6 +99,11 @@ def onRelease(key):
             b = b'b'
             ser.write(b)
             print("ctrl_l RELEASED")
+        if key == keyboard.Key.esc:
+            b=b'z'
+            ser.write(b)
+            print("Quiting")
+            quit()
 
 
 with keyboard.Listener(

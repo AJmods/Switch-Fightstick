@@ -36,32 +36,32 @@ extern const uint8_t image_data[0x12c1] PROGMEM;
 
 //button states
 //left stick
-extern int l_moveLeft = false;
-extern int l_moveRight = false;
-extern int l_moveUp = false;
-extern int l_moveDown = false;
+int l_moveLeft = false;
+int l_moveRight = false;
+int l_moveUp = false;
+int l_moveDown = false;
 
 //right stick
-extern int r_moveLeft = false;
-extern int r_moveRight = false;
-extern int r_moveUp = false;
-extern int r_moveDown = false;
+int r_moveLeft = false;
+int r_moveRight = false;
+int r_moveUp = false;
+int r_moveDown = false;
 
 //buttons
-extern int aPressed = false;
-extern int bPressed = false;
-extern int yPressed = false;
-extern int xPressed = false;
-extern int lPressed = false;
-extern int rPressed = false;
-extern int zlPressed = false;
-extern int zrPressed = false;
+int aPressed = false;
+int bPressed = false;
+int yPressed = false;
+int xPressed = false;
+int lPressed = false;
+int rPressed = false;
+int zlPressed = false;
+int zrPressed = false;
 
 //dpad
-extern int dpadLeftPressed = false;
-extern int dpadRightPressed = false;
-extern int dpadUpPressed = false;
-extern int dpadDownPressed = false;
+int dpadLeftPressed = false;
+int dpadRightPressed = false;
+int dpadUpPressed = false;
+int dpadDownPressed = false;
 
 
 
@@ -251,13 +251,13 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 			state=UPDATE;
 			break;
 		case UPDATE:
-
 		    //---------------------------------------------------------------------------------------------------------------------------
             //Read UART char
             //---------------------------------------------------------------------------------------------------------------------------
 
             //Upper case is pressed, lowercase is released.
             c = uart_getchar();
+						//TODO: convert to switch statement
 			if (c == 'U'){
 			    l_moveUp = true;
 			    l_moveDown = false;
@@ -309,7 +309,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 			//Button Actions
 			//---------------------------------------------------------------------------------------------------------------------------
 
-			//move left, right, or no direction among X axis
+			//move left, right, or no direction among X axis.
 			if (l_moveRight) {
                 ReportData->LX = STICK_MAX;
 			} else if (l_moveLeft) {
@@ -318,11 +318,11 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                 ReportData->LX = STICK_CENTER;
 			}
 
-            //move up, down, or no direction among Y axis
+            //move up, down, or no direction among Y axis.  Is inverted
             if (l_moveUp) {
-                ReportData->LY = STICK_MAX;
-            } else if (l_moveDown) {
                 ReportData->LY = STICK_MIN;
+            } else if (l_moveDown) {
+                ReportData->LY = STICK_MAX;
             } else { //This statement is probably not needed
                 ReportData->LY = STICK_CENTER;
             }
@@ -335,10 +335,10 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                 ReportData -> Button |= SWITCH_B;
             }
             if (yPressed) {
-                ReportData -> Button |= SWITCH_Y
+                ReportData -> Button |= SWITCH_Y;
             }
             if (xPressed) {
-                ReportData -> Button |= SWITCH_X
+                ReportData -> Button |= SWITCH_X;
             }
 			break;
 		case DONE:
