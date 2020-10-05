@@ -14,9 +14,9 @@ def get_port_from_user():
     port_list = list(list_ports.grep(""))
     if len(port_list) == 0:
         raise LookupError("Unable to detect Serial Device.")
-    # index_port_list_str = [f"Index: {index}, Port: {port.device}, Description: {port.description}"
-    # for index, port in enumerate(port_list)]
-    # print(index_port_list_str)
+    index_port_list_str = ["Index: {index}, Port: {port.device}, Description: {port.description}"
+                           for index, port in enumerate(port_list)]
+    print(index_port_list_str)
     while True:
         ind = input("What port index should be used? ")
         if not (0 <= int(ind) < len(port_list)):
@@ -90,7 +90,7 @@ def onRelease(key):
             ser.write(b)
             print("D RELEASED")
     except:
-        print("INVALID KEY")
+ #       print("INVALID KEY")
         if key == keyboard.Key.space:
             b = b'a'
             ser.write(b)
