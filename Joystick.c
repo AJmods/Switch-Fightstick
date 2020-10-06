@@ -56,6 +56,11 @@ int lPressed = false;
 int rPressed = false;
 int zlPressed = false;
 int zrPressed = false;
+int plusPressed = false;
+int minusPressed = false;
+int homePressed = false;
+int capturePressed = false;
+
 
 //dpad
 int dpadLeftPressed = false;
@@ -310,6 +315,17 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                 case 'x':
                     xPressed = false;
                     break;
+                case '+':
+                    plusPressed = true;
+                    break;
+                case '=':
+                    plusPressed = false;
+                    break;
+                case '-':
+                    minusPressed = true;
+                    break;
+                case '_':
+                    minusPressed = false;
                 case 'C':
                     state = CONNECT;
                     break;
@@ -385,6 +401,22 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
             } else { //This statement is probably not needed
                 ReportData->LY = STICK_CENTER;
             }
+            if (r_moveRight) {
+                ReportData->RX = STICK_MAX;
+            } else if (r_moveLeft) {
+                ReportData->RX = STICK_MIN;
+            } else { //This statement is probably not needed
+                ReportData->RX = STICK_CENTER;
+            }
+
+            //move up, down, or no direction among Y axis.  Is inverted
+            if (r_moveUp) {
+                ReportData->RY = STICK_MIN;
+            } else if (r_moveDown) {
+                ReportData->RY = STICK_MAX;
+            } else { //This statement is probably not needed
+                ReportData->RY = STICK_CENTER;
+            }
 
             //check other buttons
             if (aPressed) {
@@ -398,6 +430,30 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
             }
             if (xPressed) {
                 ReportData -> Button |= SWITCH_X;
+            }
+            if (lPressed) {
+                ReportData -> Button |= SWITCH_L;
+            }
+            if (rPressed) {
+                ReportData->Button |= SWITCH_R;
+            }
+            if (zlPressed) {
+                ReportData->Button |= SWITCH_ZL;
+            }
+            if (zrPressed) {
+                ReportData->Button |= SWITCH_ZR;
+            }
+            if (plusPressed) {
+                ReportData -> Button |= SWITCH_PLUS;
+            }
+            if (minusPressed) {
+                ReportData -> Button |= SWITCH_MINUS;
+            }
+            if (homePressed) {
+                ReportData -> Button |= SWITCH_HOME;
+            }
+            if (capturePressed) {
+                ReportData -> Button |= SWITCH_CAPTURE;
             }
             break;
         case DONE:
