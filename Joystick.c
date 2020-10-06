@@ -60,7 +60,8 @@ int plusPressed = false;
 int minusPressed = false;
 int homePressed = false;
 int capturePressed = false;
-
+int rStickPressed = false;
+int lStickPressed = false;
 
 //dpad
 int dpadLeftPressed = false;
@@ -291,6 +292,34 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                 case 'r':
                     l_moveRight = false;
                     break;
+                case 'I':
+                    r_moveUp = true;
+                    r_moveDown = false;
+                    break;
+                case 'i':
+                    r_moveUp = false;
+                    break;
+                case 'K':
+                    r_moveDown = true;
+                    r_moveUp = false;
+                    break;
+                case 'k':
+                    r_moveDown = false;
+                    break;
+                case 'J':
+                    r_moveLeft = true;
+                    r_moveRight = false;
+                    break;
+                case 'j':
+                    r_moveLeft = false;
+                    break;
+                case 'M':
+                    r_moveRight = true;
+                    r_moveLeft = false;
+                    break;
+                case 'm':
+                    r_moveRight = false;
+                    break;
                 case 'A':
                     aPressed = true;
                     break;
@@ -315,6 +344,41 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                 case 'x':
                     xPressed = false;
                     break;
+                case 'T':
+                    lPressed = true;
+                    break;
+                case 't':
+                    lPressed = false;
+                    break;
+                case 'Y':
+                    rPressed = true;
+                    break;
+                case 'y':
+                    rPressed = false;
+                    break;
+                case 'F':
+                    zlPressed = true;
+                    break;
+                case 'f':
+                    zlPressed = false;
+                    break;
+                case 'G':
+                    zrPressed = true;
+                    break;
+                case 'g':
+                    zrPressed = false;
+                    break;
+                case 'O':
+                    lStickPressed = true;
+                    break;
+                case 'o':
+                    lStickPressed = false;
+                    break;
+                case 'P':
+                    rStickPressed = true;
+                    break;
+                case 'p':
+                    rStickPressed = false;
                 case '+':
                     plusPressed = true;
                     break;
@@ -326,6 +390,31 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case '_':
                     minusPressed = false;
+                    break;
+                case 'H':
+                    homePressed = true;
+                    break;
+                case 'h':
+                    homePressed = false;
+                    break;
+                case 'V':
+                    capturePressed = true;
+                    break;
+                case 'v':
+                    capturePressed = false;
+                    break;
+                case 'Q':
+                    lStickPressed = true;
+                    break;
+                case 'q':
+                    lStickPressed = false;
+                    break;
+                case 'E':
+                    rStickPressed = true;
+                    break;
+                case 'e':
+                    rStickPressed = false;
+                    break;
                 case 'C':
                     state = CONNECT;
                     break;
@@ -333,52 +422,6 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     state = CONNECT;
                     break;
             }
-//            if (c == 'U'){
-//                l_moveUp = true;
-//                l_moveDown = false;
-//                //ReportData->LY = STICK_MIN;
-//            } else if (c == 'u') {
-//                l_moveUp = false;
-//            }else if (c == 'D') {
-//                l_moveDown = true;
-//                l_moveUp = false;
-//                //ReportData->LY = STICK_MAX;
-//            } else if (c == 'd') {
-//                l_moveDown = false;
-//            } else if (c == 'L'){
-//                l_moveLeft = true;
-//                l_moveRight = false;
-//                //ReportData->LX = STICK_MIN;
-//            } else if (c == 'l') {
-//                l_moveLeft = false;
-//            } else if (c == 'R') {
-//                l_moveRight = true;
-//                l_moveLeft = false;
-//                //ReportData->LX = STICK_MAX;
-//            } else if (c == 'r') {
-//                l_moveRight = false;
-//            } else if (c == 'A') {
-//                aPressed = true;
-//                //state = PRESS_A;
-//            } else if (c == 'a') {
-//                aPressed = false;
-//            } else if (c == 'B'){
-//                bPressed = true;
-//                //state = PRESS_B;
-//            } else if (c == 'b') {
-//                bPressed = false;
-//            }else if (c == 'Y') {
-//                yPressed = true;
-//                //state = PRESSY;
-//            } else if (c == 'y') {
-//                yPressed = false;
-//            } else if (c == 'X') {
-//                xPressed = true;
-//            } else if (c == 'x') {
-//                xPressed = false;
-//            } else if (c == 'C' || c == 'c'){
-//                state = CONNECT;
-//            }
 
             //---------------------------------------------------------------------------------------------------------------------------
             //Button Actions
@@ -454,6 +497,12 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
             }
             if (capturePressed) {
                 ReportData -> Button |= SWITCH_CAPTURE;
+            }
+            if (rStickPressed) {
+                ReportData > Button |= SWITCH_RCLICK;
+            }
+            if (lStickPressed) {
+                ReportData -> Button |= SWITCH_LCLICK
             }
             break;
         case DONE:
