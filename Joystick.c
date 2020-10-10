@@ -271,12 +271,15 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case 'u':
                     l_moveUp = false;
+		                l_moveDown = false;
                     break;
                 case 'D':
                     l_moveDown = true;
                     l_moveUp = false;
+                    break;
                 case 'd':
                     l_moveDown = false;
+		                l_moveUp = false;
                     break;
                 case 'L':
                     l_moveLeft = true;
@@ -284,6 +287,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case 'l':
                     l_moveLeft = false;
+		                l_moveRight = false;
                     break;
                 case 'R':
                     l_moveRight = true;
@@ -291,6 +295,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case 'r':
                     l_moveRight = false;
+		                l_moveLeft = false;
                     break;
                 case 'I':
                     r_moveUp = true;
@@ -298,6 +303,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case 'i':
                     r_moveUp = false;
+		                r_moveDown = false;
                     break;
                 case 'K':
                     r_moveDown = true;
@@ -305,6 +311,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case 'k':
                     r_moveDown = false;
+		                r_moveUp = false;
                     break;
                 case 'J':
                     r_moveLeft = true;
@@ -312,6 +319,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case 'j':
                     r_moveLeft = false;
+		                r_moveRight = false;
                     break;
                 case 'M':
                     r_moveRight = true;
@@ -319,6 +327,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case 'm':
                     r_moveRight = false;
+		                r_moveLeft = false;
                     break;
                 case 'A':
                     aPressed = true;
@@ -350,10 +359,10 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                 case 't':
                     lPressed = false;
                     break;
-                case 'Y':
+                case 'W':
                     rPressed = true;
                     break;
-                case 'y':
+                case 'w':
                     rPressed = false;
                     break;
                 case 'F':
@@ -499,10 +508,10 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                 ReportData -> Button |= SWITCH_CAPTURE;
             }
             if (rStickPressed) {
-                ReportData > Button |= SWITCH_RCLICK;
+                ReportData -> Button |= SWITCH_RCLICK;
             }
             if (lStickPressed) {
-                ReportData -> Button |= SWITCH_LCLICK
+                ReportData -> Button |= SWITCH_LCLICK;
             }
             break;
         case DONE:
