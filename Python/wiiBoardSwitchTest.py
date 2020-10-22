@@ -12,9 +12,9 @@ def get_port_from_user():
     port_list = list(list_ports.grep(""))
     if len(port_list) == 0:
         raise LookupError("Unable to detect Serial Device.")
-    index_port_list_str
+    
     for index, port in enumerate(port_list):
-        print "Index: " + index + ", Port: " + port.device + "Description: " + port.description
+        print "Index: " + str(index) + ", Port: " + str(port.device) + "Description: " + str(port.description)
 
     while True:
         ind = input("What port index should be used? ")
