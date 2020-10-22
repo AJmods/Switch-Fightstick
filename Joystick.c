@@ -311,7 +311,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case 'k':
                     r_moveDown = false;
-		                r_moveUp = false;
+                    r_moveUp = false;
                     break;
                 case 'J':
                     r_moveLeft = true;
@@ -319,7 +319,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case 'j':
                     r_moveLeft = false;
-		                r_moveRight = false;
+                    r_moveRight = false;
                     break;
                 case 'M':
                     r_moveRight = true;
@@ -327,7 +327,7 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case 'm':
                     r_moveRight = false;
-		                r_moveLeft = false;
+                    r_moveLeft = false;
                     break;
                 case 'A':
                     aPressed = true;
@@ -429,6 +429,43 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
                     break;
                 case 'c':
                     state = CONNECT;
+                    break;
+                case 'z':
+                    //stop every movement
+
+                    //left stick
+                    l_moveLeft = false;
+                    l_moveRight = false;
+                    l_moveUp = false;
+                    l_moveDown = false;
+
+                    //right stick
+                    r_moveLeft = false;
+                    r_moveRight = false;
+                    r_moveUp = false;
+                    r_moveDown = false;
+
+                    //buttons
+                    aPressed = false;
+                    bPressed = false;
+                    yPressed = false;
+                    xPressed = false;
+                    lPressed = false;
+                    rPressed = false;
+                    zlPressed = false;
+                    zrPressed = false;
+                    plusPressed = false;
+                    minusPressed = false;
+                    homePressed = false;
+                    capturePressed = false;
+                    rStickPressed = false;
+                    lStickPressed = false;
+
+                    //dpad
+                    dpadLeftPressed = false;
+                    dpadRightPressed = false;
+                    dpadUpPressed = false;
+                    dpadDownPressed = false;
                     break;
             }
 
