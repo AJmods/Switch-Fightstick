@@ -17,13 +17,14 @@ def main():
     done = False
 
     b = b'z'
+    attacking = False
     while not done:
         time.sleep(0.05)
         for event in pygame.event.get():
             if event.type == wiiboard.WIIBOARD_MASS:
-		print "--Mass event--   Total weight: " + `event.mass.totalWeight` + ". Top left: " + `event.mass.topLeft`
                 if event.mass.totalWeight > 0:  # 10KG. otherwise you would get alot of useless small events!
-                    
+                    print "--Mass event--   Total weight: " + `event.mass.totalWeight` + ". Top left: " + `event.mass.topLeft`
+
                     # leanThreadhold = event.mass.totalWeight / 3.5
                     # bottomLeadThreshhold = event.mass.totalWeight / 1.5
                     leanPercent = 1.5
@@ -34,12 +35,20 @@ def main():
                     bottomMass = event.mass.bottomLeft + event.mass.bottomRight + .001
 
                     if b == ButtonNames.LEFT_STICK_UP:
-                        b = b'z'
+                        b = ButtonNames.LEFT_STICK_UP_STOP
                         print "Stopping jump"
+                    elif b == ButtonNames.A_PRESS and leftMass / rightMass < attackPercent:
+                        b = ButtonNames.A_RELEASE
+                        print ("Stopping left attack")
+                    elif b == ButtonNames.B_PRESS and rightMass / leftMass < attackPercent:
+                        b = ButtonNames.B_RELEASE
+                        print "Stopping right attack"
                     elif leftMass / rightMass > attackPercent:
+                        b = ButtonNames.A_PRESS
                         print "ATTACK from the LEFT"
                     elif rightMass / leftMass > attackPercent:
-                        print "ATTACK from the LEFT"
+                        b = ButtonNames.B_PRESS
+                        print "ATTACK from the RIGHT"
                     elif leftMass / rightMass > leanPercent:
                         print "LEANING LEFT"
                         percentLeaning = 100 - (rightMass / leftMass * 100)

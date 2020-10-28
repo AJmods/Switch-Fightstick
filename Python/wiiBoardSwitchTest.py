@@ -12,7 +12,7 @@ def get_port_from_user():
     port_list = list(list_ports.grep(""))
     if len(port_list) == 0:
         raise LookupError("Unable to detect Serial Device.")
-    
+
     for index, port in enumerate(port_list):
         print "Index: " + str(index) + ", Port: " + str(port.device) + "Description: " + str(port.description)
 
@@ -57,19 +57,30 @@ def main():
                     rightMass = event.mass.topRight + event.mass.bottomRight
                     topMass = event.mass.topLeft + event.mass.topRight
                     bottomMass = event.mass.bottomLeft + event.mass.bottomRight
+                    leanPercent = 1.5
+                    bottomLeanPercent = 3
+                    attackPercent = 5
                     if b == ButtonNames.LEFT_STICK_UP:
                         print "Stopping jump"
                         b = ButtonNames.LEFT_STICK_UP_STOP
-                    elif leftMass > rightMass + leanThreadhold:
-                        print "LEANING LEFT"
+                    elif leftMass / rightMass > leanPercent:
                         b = ButtonNames.LEFT_STICK_LEFT
-                    elif rightMass > leftMass + leanThreadhold:
-                        print "LEANING RIGHT"
+                        print "LEANING LEFT"
+                        percentLeaning = 100 - (rightMass / leftMass * 100)
+                        print "PERCENT LEANING: " + str(percentLeaning)
+                    elif rightMass / leftMass > leanPercent:
                         b = ButtonNames.LEFT_STICK_RIGHT
-                    elif topMass > bottomMass + leanThreadhold:
+                        print "LEANING RIGHT"
+                        percentLeaning = 100 - (leftMass / rightMass * 100)
+                        print "PERCENT LEANING: " + str(percentLeaning)
+                    elif topMass / bottomMass > leanPercent:
                         print "LEANING UP"
-                    elif bottomMass > topMass + bottomLeadThreshhold:
+                        percentLeaning = 100 - (bottomMass / topMass * 100)
+                        print "PERCENT LEANING: " + str(percentLeaning)
+                    elif bottomMass / topMass > bottomLeanPercent:
                         print "LEANING DOWN"
+                        percentLeaning = 100 - (bottomMass / topMass * 100)
+                        print "PERCENT LEANING: " + str(percentLeaning)
                     else:
                         b = ButtonNames.LEFT_STICK_LEFT_STOP
                         print "STOPPING"
