@@ -22,13 +22,14 @@ def main():
         time.sleep(0.05)
         for event in pygame.event.get():
             if event.type == wiiboard.WIIBOARD_MASS:
-                if event.mass.totalWeight > 0:  # 10KG. otherwise you would get alot of useless small events!
+                if event.mass.totalWeight > 10:  # 10KG. otherwise you would get alot of useless small events!
                     print "--Mass event--   Total weight: " + `event.mass.totalWeight` + ". Top left: " + `event.mass.topLeft`
 
                     # leanThreadhold = event.mass.totalWeight / 3.5
                     # bottomLeadThreshhold = event.mass.totalWeight / 1.5
-                    leanPercent = 1.5
-                    attackPercent = 5
+                    leanPercent = 2.5
+                    leanDownPercent = 5
+                    attackPercent = 7
                     leftMass = event.mass.topLeft + event.mass.bottomLeft + .001
                     rightMass = event.mass.topRight + event.mass.bottomRight + .001
                     topMass = event.mass.topLeft + event.mass.topRight + .001
@@ -61,7 +62,7 @@ def main():
                         print "LEANING UP"
                         percentLeaning = 100 - (bottomMass / topMass * 100)
                         print "PERCENT LEANING: " + str(percentLeaning)
-                    elif bottomMass / topMass > leanPercent:
+                    elif bottomMass / topMass > leanDownPercent:
                         print "LEANING DOWN"
                         percentLeaning = 100 - (bottomMass / topMass * 100)
                         print "PERCENT LEANING: " + str(percentLeaning)

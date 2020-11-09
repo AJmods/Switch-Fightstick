@@ -53,16 +53,30 @@ def main():
                     print "--Mass event--   Total weight: " + `event.mass.totalWeight` + ". Top left: " + `event.mass.topLeft`
                     leanThreadhold = event.mass.totalWeight / 3.5
                     bottomLeadThreshhold = event.mass.totalWeight / 1.5
-                    leftMass = event.mass.topLeft + event.mass.bottomLeft
-                    rightMass = event.mass.topRight + event.mass.bottomRight
-                    topMass = event.mass.topLeft + event.mass.topRight
-                    bottomMass = event.mass.bottomLeft + event.mass.bottomRight
-                    leanPercent = 1.5
-                    bottomLeanPercent = 3
-                    attackPercent = 5
+                    leftMass = event.mass.topLeft + event.mass.bottomLeft + .0001
+                    rightMass = event.mass.topRight + event.mass.bottomRight + .0001
+                    topMass = event.mass.topLeft + event.mass.topRight + .0001
+                    bottomMass = event.mass.bottomLeft + event.mass.bottomRight + .0001
+                    print "LEFT MASS: " + `leftMass` + " RIGHT MASS: " + `rightMass`
+                    leanPercent = 2.5
+                    bottomLeanPercent = 5
+                    attackPercent = 7
+                    attackMaxMass = 15
                     if b == ButtonNames.LEFT_STICK_UP:
                         print "Stopping jump"
                         b = ButtonNames.LEFT_STICK_UP_STOP
+                    elif b == ButtonNames.A_PRESS and rightMass > attackMaxMass:
+                        b = ButtonNames.A_RELEASE
+                        print ("Stopping left attack")
+                    elif b == ButtonNames.B_PRESS and leftMass > attackMaxMass:
+                        b = ButtonNames.B_RELEASE
+                        print "Stopping right attack"
+                    elif rightMass < attackMaxMass:
+                        b = ButtonNames.A_PRESS
+                        print "ATTACK from the LEFT"
+                    elif leftMass < attackMaxMass:
+                        b = ButtonNames.B_PRESS
+                        print "ATTACK from the RIGHT"
                     elif leftMass / rightMass > leanPercent:
                         b = ButtonNames.LEFT_STICK_LEFT
                         print "LEANING LEFT"
