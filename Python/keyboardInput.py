@@ -2,7 +2,7 @@ from pynput import keyboard
 
 def on_press(key):
     if key.char == b'a' or key.char == b'A':
-        print "A PRESSED"
+        print("A PRESSED")
 
 
 def onRelease(key):
